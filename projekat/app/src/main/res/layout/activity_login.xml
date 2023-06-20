@@ -22,4 +22,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/buttonMapa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="256dp"
+        android:layout_marginBottom="46dp"
+        android:text="Lokacija na Mapi"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonVidiSveKorisnike" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

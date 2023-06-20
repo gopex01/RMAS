@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +30,7 @@ import com.squareup.picasso.Picasso;
 import java.util.UUID;
 
 import javax.sql.RowSet;
+import android.util.Log;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     Button buttonSignUp;
     TextInputEditText newEmail,newPassword,newUsername;
+    EditText newPhone,newName;
     CircleImageView regPhoto;
     FirebaseAuth auth;
     FirebaseDatabase database;
@@ -54,6 +57,8 @@ public class SignUpActivity extends AppCompatActivity {
         newPassword=findViewById(R.id.PasswordSignUp);
         newUsername=findViewById(R.id.UsernameSignUp);
         regPhoto=findViewById(R.id.circleImageViewSignUp);
+        newPhone=findViewById(R.id.editTextPhone);
+        newName=findViewById(R.id.editTextTextPersonName);
         auth=FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
         reference=database.getReference();
@@ -70,13 +75,16 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String catchPass,catchUser,catchEmail;
+                String catchPass,catchUser,catchEmail,catchPhone,catchName;
                 catchEmail=newEmail.getText().toString();
                 catchUser=newUsername.getText().toString();
                 catchPass=newPassword.getText().toString();
-                if(!catchEmail.equals("") && !catchUser.equals("") && !catchPass.equals(""))
+                catchName=newName.getText().toString();
+                catchPhone=newPhone.getText().toString();
+                if(!catchEmail.equals("") && !catchUser.equals("") && !catchPass.equals("") && !catchPhone.equals("") && !catchName.equals(""))
                 {
-                        signUp(catchEmail,catchPass,catchUser);
+                        signUp(catchEmail,catchPass,catchUser,catchName,catchPhone);
+
                 }
                 else{
                     Toast.makeText(SignUpActivity.this,"Please enter Email,Username and Password",Toast.LENGTH_SHORT).show();
@@ -84,7 +92,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-    public void signUp(String email,String pass,String user)
+    public void signUp(String email,String pass,String user,String name,String phone)
     {
         auth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -93,6 +101,8 @@ public class SignUpActivity extends AppCompatActivity {
                 {
                     reference.child("Users").child(auth.getUid()).child("userName").setValue(user);
                     reference.child("Users").child(auth.getUid()).child("points").setValue(0);
+                    reference.child("Users").child(auth.getUid()).child("name").setValue(name);
+                    reference.child("Users").child(auth.getUid()).child("phone").setValue(phone);
                     if(imageControl)
                     {
                         UUID randomId= UUID.randomUUID();

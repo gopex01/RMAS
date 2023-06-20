@@ -17,17 +17,25 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
-    Button buttonSviKorisnici;
+    Button buttonSviKorisnici,lokacijaMapa;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         auth= FirebaseAuth.getInstance();
         buttonSviKorisnici=findViewById(R.id.buttonVidiSveKorisnike);
+        lokacijaMapa=findViewById(R.id.buttonMapa);
         buttonSviKorisnici.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(LoginActivity.this,AllUsersActivity.class);
+                startActivity(intent);
+            }
+        });
+        lokacijaMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this,MapActivity.class);
                 startActivity(intent);
             }
         });
