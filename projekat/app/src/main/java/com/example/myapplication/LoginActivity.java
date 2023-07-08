@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseUser currentUser;
     String userName, points;
-    Button buttonSviKorisnici, lokacijaMapa, dodajTeretanu;
+    Button buttonSviKorisnici, lokacijaMapa, dodajTeretanu,sveTeretane,teretaneMapa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
         currentUser = auth.getCurrentUser();
+        sveTeretane=findViewById(R.id.buttonSveTeretane);
+        teretaneMapa=findViewById(R.id.buttonPrikazGymMapa);
 
         buttonSviKorisnici.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +68,20 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        sveTeretane.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(LoginActivity.this,AllGymActivity.class);
+                startActivity(i);
+            }
+        });
+        teretaneMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(LoginActivity.this,TeretanaMapActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -84,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
         if (item.getItemId() == R.id.menuItemSettings) {
-            Toast.makeText(LoginActivity.this, "UUSEPH", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoginActivity.this,SettingsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

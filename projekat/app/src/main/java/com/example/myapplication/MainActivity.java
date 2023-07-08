@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     TextInputEditText inputEmail,inputPassword;
     Button buttonLogin,buttonSignup;
-    TextView forgetPass;
     FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         inputPassword=findViewById(R.id.textInputPassword);
         buttonLogin=findViewById(R.id.buttonLogin);
         buttonSignup=findViewById(R.id.buttonSignUp);
-        forgetPass=findViewById(R.id.textViewForgetPassword);
         auth=FirebaseAuth.getInstance();
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -42,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
                 catchEmail=inputEmail.getText().toString();
                 if(!catchEmail.equals("") && !catchPassword.equals("")) {
                     Login(catchEmail, catchPassword);
-                    Intent intent=new Intent(MainActivity.this,LoginActivity.class);
-                    startActivity(intent);
+                   // Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                   // startActivity(intent);
                 }
                 else{
                     Toast.makeText(MainActivity.this,"Please enter username and password",Toast.LENGTH_SHORT).show();
@@ -68,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 {
                     /*Intent intent=new Intent(MainActivity.this,LoginActivity.class);
                     startActivity(intent);*/
+                    Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                    startActivity(intent);
                     Toast.makeText(MainActivity.this,"Login is successfull",Toast.LENGTH_SHORT).show();
                 }
                 else{

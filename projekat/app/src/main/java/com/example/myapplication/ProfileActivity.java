@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,7 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView username,password,email;
+    TextView username,points,name;
     Button buttonUpdate;
     CircleImageView profilePhoto;
     FirebaseAuth auth;
@@ -36,8 +35,8 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         username=findViewById(R.id.textViewUsername);
-        email=findViewById(R.id.textViewEmail);
-        password=findViewById(R.id.textViewPassword);
+        name=findViewById(R.id.textViewName);
+        points=findViewById(R.id.textViewPoints);
         buttonUpdate=findViewById(R.id.buttonUpdateProfile);
         profilePhoto=findViewById(R.id.circleImageViewProfile);
         auth=FirebaseAuth.getInstance();
@@ -58,9 +57,13 @@ public class ProfileActivity extends AppCompatActivity {
         reference.child("Users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name=snapshot.child("userName").getValue().toString();
+                String usname=snapshot.child("userName").getValue().toString();
                 String photo=snapshot.child("image").getValue().toString();
-                username.setText(name);
+                String namec=snapshot.child("name").getValue().toString();
+                String pointsc=snapshot.child("points").getValue().toString();
+                username.setText("Username: "+usname);
+                name.setText("Name & surname: "+namec);
+                points.setText("Points: "+pointsc);
                 if(photo.equals("null")){
                     profilePhoto.setImageResource(R.drawable.login);
                 }

@@ -22,16 +22,14 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
+public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
     List<String> userList;
-    String userName;
     Context mContext;
     FirebaseDatabase database;
     DatabaseReference reference;
-    public UsersAdapter(List<String>uL,String uN,Context mC)
+    public GymAdapter(List<String>uL,Context mC)
     {
         this.userList=uL;
-        this.userName=uN;
         this.mContext=mC;
         database=FirebaseDatabase.getInstance();
         reference=database.getReference();
@@ -40,27 +38,19 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.users_card,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.gym_card,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        reference.child("Users").child(userList.get(position)).addValueEventListener(new ValueEventListener() {
+        reference.child("Teretane").child(userList.get(position)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String otherName=snapshot.child("userName").getValue().toString();
-                String imageURL=snapshot.child("image").getValue().toString();
-                String points=snapshot.child("points").getValue().toString();
-                holder.textViewUsers.setText(otherName);
-                holder.textViewPoints.setText(points);
-                if(imageURL.equals("null"))
-                {
-                    holder.imageViewUsers.setImageResource(R.drawable.login);
-                }
-                else{
-                    Picasso.get().load(imageURL).into(holder.imageViewUsers);
-                }
+                String naziv=snapshot.child("naziv").getValue().toString();
+                String radnoVreme=snapshot.child("radnoVreme").getValue().toString();
+                holder.textViewNaziv.setText(naziv);
+                holder.textViewRadnoVreme.setText(radnoVreme);
 
             }
 
@@ -79,21 +69,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     public class ViewHolder extends  RecyclerView.ViewHolder
     {
-        private TextView  textViewUsers;
-        private CircleImageView imageViewUsers;
-        private CardView cardView;
-        private TextView textViewPoints;
+        private TextView textViewNaziv;
+        private TextView textViewRadnoVreme;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewUsers=itemView.findViewById(R.id.textViewUsers);
-            imageViewUsers=itemView.findViewById(R.id.imageViewUsers);
-            cardView=itemView.findViewById(R.id.cardView);
-            textViewPoints=itemView.findViewById(R.id.textViewPointsCard);
+            textViewNaziv=itemView.findViewById(R.id.textViewNazivTeretane);
+            textViewRadnoVreme=itemView.findViewById(R.id.textViewRadnoVreme);
         }
-    }
-    public void sortList()
-    {
-
     }
 
 
