@@ -7,6 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +32,8 @@ public class AllGymActivity extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference reference;
     FirebaseDatabase database;
+    Button dodajOcenu;
+    EditText ocena;
     FirebaseUser user;
     List<String> list;
     GymAdapter adapter;
@@ -36,6 +44,7 @@ public class AllGymActivity extends AppCompatActivity {
         rv=findViewById(R.id.rvGyms);
         rv.setLayoutManager(new LinearLayoutManager(this));
         list=new ArrayList<>();
+        dodajOcenu=findViewById(R.id.buttonDodajOcenuTeretani);
         auth=FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
         user=auth.getCurrentUser();
@@ -86,6 +95,22 @@ public class AllGymActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public class ViewHolder extends  RecyclerView.ViewHolder
+    {
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            dodajOcenu=itemView.findViewById(R.id.buttonDodajOcenuTeretani);
+            ocena=itemView.findViewById(R.id.ocena);
+            dodajOcenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(AllGymActivity.this, "Uhvaceno", Toast.LENGTH_SHORT).show();
+                    Log.d("najjace","najjace123");
+                }
+            });
+        }
     }
 
 }
