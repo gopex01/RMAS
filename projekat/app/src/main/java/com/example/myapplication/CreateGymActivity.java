@@ -156,21 +156,7 @@ public class CreateGymActivity extends AppCompatActivity {
             }
         });
     }
-    /*private void getUserLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            if (locationManager != null) {
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (location != null) {
-                    userLatitude = ((Location) location).getLatitude();
-                    userLongitude = location.getLongitude();
-                }
-            }
-        } else {
-            // Ako nemate dozvolu za pristup lokaciji, zatražite je od korisnika
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-//    }*/
+
     private void getUserLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 

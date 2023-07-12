@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -21,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -44,7 +49,7 @@ public class AllGymActivity extends AppCompatActivity {
         rv=findViewById(R.id.rvGyms);
         rv.setLayoutManager(new LinearLayoutManager(this));
         list=new ArrayList<>();
-        dodajOcenu=findViewById(R.id.buttonDodajOcenuTeretani);
+        //dodajOcenu=findViewById(R.id.buttonDodajOcenuTeretani);
         auth=FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
         user=auth.getCurrentUser();
@@ -98,19 +103,18 @@ public class AllGymActivity extends AppCompatActivity {
     }
     public class ViewHolder extends  RecyclerView.ViewHolder
     {
-
+        TextView nazivTeretane;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dodajOcenu=itemView.findViewById(R.id.buttonDodajOcenuTeretani);
+            nazivTeretane=itemView.findViewById(R.id.textViewNazivTeretane);
             ocena=itemView.findViewById(R.id.ocena);
             dodajOcenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(AllGymActivity.this, "Uhvaceno", Toast.LENGTH_SHORT).show();
-                    Log.d("najjace","najjace123");
+
                 }
             });
         }
     }
-
 }

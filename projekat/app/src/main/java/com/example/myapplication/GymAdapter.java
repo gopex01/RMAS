@@ -48,6 +48,8 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
         this.mContext=mC;
         database=FirebaseDatabase.getInstance();
         reference=database.getReference();
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
     }
 
     @NonNull
@@ -65,9 +67,9 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
                 String naziv=snapshot.child("naziv").getValue().toString();
                 String radnoVreme=snapshot.child("radnoVreme").getValue().toString();
                 String prosecnaOcena=snapshot.child("ocene").getValue().toString();
-                holder.textViewNaziv.setText("Naziv:"+naziv);
-                holder.textViewRadnoVreme.setText("Radno vreme:"+radnoVreme);
-                holder.textViewProsecnaOcena.setText("Prosecna ocena:"+prosecnaOcena);
+                holder.textViewNaziv.setText(naziv);
+                holder.textViewRadnoVreme.setText(radnoVreme);
+                holder.textViewProsecnaOcena.setText(prosecnaOcena);
 
             }
 
@@ -91,13 +93,14 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
         private TextView textViewRadnoVreme;
         private TextView textViewProsecnaOcena;
         private Button dodajOcenu;
+        private EditText ocena;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewNaziv=itemView.findViewById(R.id.textViewNazivTeretane);
             textViewRadnoVreme=itemView.findViewById(R.id.textViewRadnoVreme);
             textViewProsecnaOcena=itemView.findViewById(R.id.prosecnaOcena);
             dodajOcenu=itemView.findViewById(R.id.buttonDodajOcenuTeretani);
-            EditText ocena=itemView.findViewById(R.id.ocena);
+            ocena=itemView.findViewById(R.id.ocena);
             dodajOcenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -111,8 +114,6 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
     }
 
     public void OceniTeretanu(String name, String novaOcena) {
-        auth = FirebaseAuth.getInstance();
-        currentUser = auth.getCurrentUser();
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Teretane");
         Query query = usersRef.orderByChild("naziv").equalTo(name);
 
@@ -122,6 +123,7 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     String gymId = childSnapshot.getKey();
                     DatabaseReference gymRef = usersRef.child(gymId);
+                    Log.d("u","uquery sam");
 
                     gymRef.child("ocene").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -130,7 +132,6 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
                                 int staraOcena = dataSnapshot.getValue(Integer.class);
                                 int novaOcenaInt = Integer.parseInt(novaOcena);
 
-                                // Izračun nove ocjene
                                 int novaVrednostOcene;
                                 if(staraOcena!=0) {
                                      novaVrednostOcene = (staraOcena + novaOcenaInt) / 2;
@@ -139,17 +140,16 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
                                      novaVrednostOcene=novaOcenaInt;
                                 }
 
-                                // Postavljanje nove vrijednosti ocene
                                 gymRef.child("ocene").setValue(novaVrednostOcene)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    // Uspješno promijenjena vrijednost
-                                                    Log.e("tag", "Uspješno promijenjena vrijednost ocene");
+
+                                                    Log.e("tag", "Uspešno promenjena vrednost ocene");
                                                 } else {
-                                                    // Greška pri promjeni vrijednosti ocene
-                                                    Log.e("tag2", "Neuspješno promijenjena vrijednost ocene");
+
+                                                    Log.e("tag2", "Neuspešno proenjena vrednost ocene");
                                                 }
                                             }
                                         });
@@ -158,7 +158,7 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            // U slučaju pogreške pri dohvatu podataka iz baze
+
                         }
                     });
                 }
@@ -178,9 +178,8 @@ public class GymAdapter extends RecyclerView.Adapter<GymAdapter.ViewHolder> {
             @Override
             public void onDataChange(@android.support.annotation.NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    // Dohvatiti trenutnu vrednost atributa "points"
+
                     int currentPoints = snapshot.child("points").getValue(Integer.class);
-                    // Povećati vrednost atributa "points" za 1
                     int newPoints = currentPoints + 5;
                     userRef.child("points").setValue(newPoints)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
